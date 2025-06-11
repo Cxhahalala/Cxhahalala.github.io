@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Redis消息队列 | Cx`s Blog</title><meta name="author" content="Cx"><meta name="copyright" content="Cx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Redis消息队列详解：介绍了Redis实现消息队列的三种方式 - List、PubSub和Stream。重点讲解了Stream的ACK确认机制、消费者组模式，以及如何通过Java代码实现通用的异步消息处理系统。Stream方式具备消息可回溯、多消费者支持、阻塞读取和消息确认等特性，是生产环境的推荐选择。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis消息队列">
+<meta property="og:url" content="https://cxhahalala.github.io/posts/redis/redis-message-queue/index.html">
+<meta property="og:site_name" content="Cx&#96;s Blog">
+<meta property="og:description" content="Redis消息队列详解：介绍了Redis实现消息队列的三种方式 - List、PubSub和Stream。重点讲解了Stream的ACK确认机制、消费者组模式，以及如何通过Java代码实现通用的异步消息处理系统。Stream方式具备消息可回溯、多消费者支持、阻塞读取和消息确认等特性，是生产环境的推荐选择。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/k8/wallhaven-k89wk6.png">
+<meta property="article:published_time" content="2025-06-11T04:55:27.000Z">
+<meta property="article:modified_time" content="2025-06-11T10:56:09.678Z">
+<meta property="article:author" content="Cx">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/k8/wallhaven-k89wk6.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Redis消息队列",
+  "url": "https://cxhahalala.github.io/posts/redis/redis-message-queue/",
+  "image": "https://w.wallhaven.cc/full/k8/wallhaven-k89wk6.png",
+  "datePublished": "2025-06-11T04:55:27.000Z",
+  "dateModified": "2025-06-11T10:56:09.678Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Cx",
+      "url": "https://cxhahalala.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://cxhahalala.github.io/posts/redis/redis-message-queue/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Redis消息队列',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/Background/%E5%A4%B4%E5%83%8F1.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/photo/"><i class="fa-fw fas fa-camera"></i><span> 图片</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://w.wallhaven.cc/full/k8/wallhaven-k89wk6.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cx`s Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Redis消息队列</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/photo/"><i class="fa-fw fas fa-camera"></i><span> 图片</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Redis消息队列</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-06-11T04:55:27.000Z" title="发表于 2025-06-11 12:55:27">2025-06-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-06-11T10:56:09.678Z" title="更新于 2025-06-11 18:56:09">2025-06-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Redis/">Redis</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>Redis消息队列详解：介绍了Redis实现消息队列的三种方式 - List、PubSub和Stream。重点讲解了Stream的ACK确认机制、消费者组模式，以及如何通过Java代码实现通用的异步消息处理系统。Stream方式具备消息可回溯、多消费者支持、阻塞读取和消息确认等特性，是生产环境的推荐选择。</p>
+<span id="more"></span>
+<h1 id="Redis消息队列"><a href="#Redis消息队列" class="headerlink" title="Redis消息队列"></a>Redis消息队列</h1><h2 id="什么是消息队列"><a href="#什么是消息队列" class="headerlink" title="什么是消息队列"></a>什么是消息队列</h2><p>什么是消息队列：字面意思就是存放消息的队列。最简单的消息队列模型包括3个角色：</p>
+<ul>
+<li>消息队列：存储和管理消息，也被称为消息代理（Message Broker）</li>
+<li>生产者：发送消息到消息队列</li>
+<li>消费者：从消息队列获取消息并处理消息<br><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611130958494.png"></li>
+</ul>
+<p>使用队列的好处在于<strong>解耦</strong>：以快递配送为例，快递员（生产者）将快递放入快递柜（消息队列），用户（消费者）随时从快递柜取货。这种异步处理方式避免了快递员等待用户在家的时间浪费。</p>
+<p>在秒杀场景中：用户下单后，系统快速校验条件并将订单信息发送到消息队列，后台服务异步处理订单，既实现了系统解耦，又提升了响应速度。</p>
+<p>Redis 作为消息队列的优势：虽然有 Kafka、RabbitMQ 等专业 MQ 中间件，但如果项目中已使用 Redis，直接利用其消息队列功能可以降低部署复杂度和学习成本。</p>
+<h2 id="基于List实现的消息队列"><a href="#基于List实现的消息队列" class="headerlink" title="基于List实现的消息队列"></a>基于List实现的消息队列</h2><p><strong>使用List结构模拟消息队列</strong><br>消息队列（Message Queue），字面意思就是存放消息的队列。而Redis的list数据结构是一个双向链表，很容易模拟出队列效果。</p>
+<p>队列是入口和出口不在一边，因此我们可以利用：<code>LPUSH</code> 结合 <code>RPOP</code>、或者 <code>RPUSH</code> 结合 <code>LPOP</code>来实现。<br>不过要注意的是，当队列中没有消息时<code>RPOP</code>或<code>LPOP</code>操作会返回null，并不像JVM的阻塞队列那样会阻塞并等待消息。因此这里应该使用<code>BRPOP</code>或者<code>BLPOP</code>来实现阻塞效果。</p>
+<p>基于List的消息队列有哪些优缺点？<br>优点：</p>
+<ul>
+<li>利用Redis存储，不受限于JVM内存上限</li>
+<li>基于Redis的持久化机制，数据安全性有保证</li>
+<li>可以满足消息有序性</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>无法避免消息丢失</li>
+<li>只支持单消费者</li>
+</ul>
+<h2 id="基于PubSub的消息队列"><a href="#基于PubSub的消息队列" class="headerlink" title="基于PubSub的消息队列"></a>基于PubSub的消息队列</h2><p>PubSub（发布订阅）是Redis2.0版本引入的消息传递模型。顾名思义，消费者可以订阅一个或多个channel，生产者向对应channel发送消息后，所有订阅者都能收到相关消息。</p>
+<p><code>SUBSCRIBE channel [channel]</code> ：订阅一个或多个频道<br><code>PUBLISH channel msg</code> ：向一个频道发送消息<br><code>PSUBSCRIBE pattern[pattern]</code> ：订阅与pattern格式匹配的所有频道</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611131522983.png"></p>
+<p>基于PubSub的消息队列有哪些优缺点？<br>优点：</p>
+<ul>
+<li>采用发布订阅模型，支持多生产、多消费</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>不支持数据持久化</li>
+<li>无法避免消息丢失</li>
+<li>消息堆积有上限，超出时数据丢失</li>
+</ul>
+<h2 id="基于Stream的消息队列"><a href="#基于Stream的消息队列" class="headerlink" title="基于Stream的消息队列"></a>基于Stream的消息队列</h2><p>Stream 是 Redis 5.0 引入的一种新数据类型，可以实现一个功能非常完善的消息队列。</p>
+<p>发送消息的命令：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611131629420.png"></p>
+<p>例如</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611131707823.png"></p>
+<p>读取消息的方式之一：XREAD</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611131737856.png"></p>
+<p>例如，使用XREAD读取第一个消息：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611131806935.png"></p>
+<p>XREAD阻塞方式，读取最新的消息：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611131909342.png"></p>
+<p>在业务开发中，我们可以循环调用 <code>XREAD</code> 阻塞方式来查询最新消息，从而实现持续监听队列的效果，伪代码如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611131931997.png"></p>
+<p>注意：当我们指定起始ID为 <code>$</code> 时，代表读取最新的消息，如果我们处理一条消息的过程中，又有超过1条以上的消息到达队列，则下次获取时也只能获取到最新的一条，会出现漏读消息的问题</p>
+<p>STREAM类型消息队列的 <code>XREAD</code> 命令特点：</p>
+<ul>
+<li>消息可回溯</li>
+<li>一个消息可以被多个消费者读取</li>
+<li>可以阻塞读取</li>
+<li>有消息漏读的风险</li>
+</ul>
+<h2 id="基于Stream的消息队列-消费者组"><a href="#基于Stream的消息队列-消费者组" class="headerlink" title="基于Stream的消息队列-消费者组"></a>基于Stream的消息队列-消费者组</h2><p>消费者组（Consumer Group）：将多个消费者划分到一个组中，监听同一个队列。具备下列特点：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611132105316.png"></p>
+<p>创建消费者组</p>
+<p><code>XGROUP CREATE key groupName ID [MKSTREAM]</code></p>
+<p>key：队列名称<br>groupName：消费者组名称<br>ID：起始ID标示，$代表队列中最后一个消息，0则代表队列中第一个消息<br>MKSTREAM：队列不存在时自动创建队列<br>其它常见命令：</p>
+<p> <strong>删除指定队列的消费者组</strong></p>
+<p> <code>XGROUP DESTROY key groupName</code></p>
+<p> <strong>删除指定队列消费者组中的消费者</strong></p>
+<p> <code>XGROUP DELCONSUMER key groupname consumername</code></p>
+<p><strong>从消费者组读取消息</strong></p>
+<p><code>XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREAMS key [key ...] ID [ID ...]</code></p>
+<ul>
+<li>group：消费组名称</li>
+<li>consumer：消费者名称，如果消费者不存在，会自动创建一个消费者</li>
+<li>count：本次查询的最大数量</li>
+<li>BLOCK milliseconds：当没有消息时最长等待时间</li>
+<li>NOACK：无需手动ACK，获取到消息后自动确认</li>
+<li>STREAMS key：指定队列名称</li>
+<li>ID：获取消息的起始ID：</li>
+</ul>
+<p>“&gt;”：从下一个未消费的消息开始<br>其它：根据指定id从pending-list中获取已消费但未确认的消息，例如0，是从pending-list中的第一个消息开始</p>
+<p>消费者监听消息的基本思路：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611132607947.png"></p>
+<p><strong>XREADGROUP 命令特点：</strong></p>
+<ul>
+<li>消息可回溯</li>
+<li>可以多消费者争抢消息，加快消费速度</li>
+<li>可以阻塞读取</li>
+<li>没有消息漏读的风险</li>
+<li>有消息确认机制，保证消息至少被消费一次</li>
+</ul>
+<p><strong>对比</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20250611132643105.png"></p>
+<h1 id="Redis的Stream消息队列实现异步操作"><a href="#Redis的Stream消息队列实现异步操作" class="headerlink" title="Redis的Stream消息队列实现异步操作"></a>Redis的Stream消息队列实现异步操作</h1><h2 id="发送消息到Stream队列"><a href="#发送消息到Stream队列" class="headerlink" title="发送消息到Stream队列"></a>发送消息到Stream队列</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j; <span class="comment">// 新增导入</span></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.stream.MapRecord;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.stream.RecordId;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.StringRedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="comment">// com.alibaba.fastjson.JSON 如果需要，请确保此依赖存在</span></span><br><span class="line"><span class="comment">// import com.alibaba.fastjson.JSON; </span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Slf4j</span> <span class="comment">// 新增注解</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisStreamProducer</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 发送消息到Stream队列</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> streamKey Stream队列的key</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> messageData 消息数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 消息ID</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">sendMessage</span><span class="params">(String streamKey, Map&lt;String, Object&gt; messageData)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 将消息发送到Stream队列</span></span><br><span class="line">            <span class="type">RecordId</span> <span class="variable">recordId</span> <span class="operator">=</span> stringRedisTemplate.opsForStream()</span><br><span class="line">                    .add(streamKey, messageData);</span><br><span class="line">            log.info(<span class="string">&quot;消息发送成功，消息ID: &#123;&#125;&quot;</span>, recordId.getValue());</span><br><span class="line">            <span class="keyword">return</span> recordId.getValue();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.error(<span class="string">&quot;发送消息失败: &#123;&#125;&quot;</span>, e.getMessage());</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;消息发送失败&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 发送业务消息的示例</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendBusinessMessage</span><span class="params">(Object businessData)</span> &#123;</span><br><span class="line">        Map&lt;String, Object&gt; messageMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        messageMap.put(<span class="string">&quot;businessId&quot;</span>, businessData.getId());</span><br><span class="line">        messageMap.put(<span class="string">&quot;businessType&quot;</span>, businessData.getClass().getSimpleName());</span><br><span class="line">        messageMap.put(<span class="string">&quot;data&quot;</span>, JSON.toJSONString(businessData));</span><br><span class="line">        messageMap.put(<span class="string">&quot;timestamp&quot;</span>, System.currentTimeMillis());</span><br><span class="line">        </span><br><span class="line">        sendMessage(<span class="string">&quot;stream:business-queue&quot;</span>, messageMap);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="消费消息的通用实现"><a href="#消费消息的通用实现" class="headerlink" title="消费消息的通用实现"></a>消费消息的通用实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisStreamConsumer</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 配置信息</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">STREAM_KEY</span> <span class="operator">=</span> <span class="string">&quot;stream:business-queue&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">GROUP_NAME</span> <span class="operator">=</span> <span class="string">&quot;business-group&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">CONSUMER_NAME</span> <span class="operator">=</span> <span class="string">&quot;consumer-1&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 启动时创建消费者组（如果不存在）</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            stringRedisTemplate.opsForStream()</span><br><span class="line">                    .createGroup(STREAM_KEY, GROUP_NAME, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="comment">// 消费者组已存在，忽略异常</span></span><br><span class="line">            log.info(<span class="string">&quot;消费者组可能已存在: &#123;&#125;&quot;</span>, e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 启动消费者线程</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="built_in">this</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 从Stream中获取消息</span></span><br><span class="line">                List&lt;MapRecord&lt;String, Object, Object&gt;&gt; messages = stringRedisTemplate.opsForStream()</span><br><span class="line">                        .read(Consumer.from(GROUP_NAME, CONSUMER_NAME),</span><br><span class="line">                              StreamReadOptions.empty().count(<span class="number">1</span>).block(Duration.ofSeconds(<span class="number">2</span>)),</span><br><span class="line">                              StreamOffset.create(STREAM_KEY, ReadOffset.lastConsumed()));</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 没有获取到消息，继续循环</span></span><br><span class="line">                <span class="keyword">if</span> (messages == <span class="literal">null</span> || messages.isEmpty()) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 处理消息</span></span><br><span class="line">                <span class="keyword">for</span> (MapRecord&lt;String, Object, Object&gt; message : messages) &#123;</span><br><span class="line">                    processMessage(message);</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                log.error(<span class="string">&quot;处理消息异常&quot;</span>, e);</span><br><span class="line">                handlePendingList();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理单个消息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">processMessage</span><span class="params">(MapRecord&lt;String, Object, Object&gt; message)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Map&lt;Object, Object&gt; messageData = message.getValue();</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 提取消息内容</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">businessId</span> <span class="operator">=</span> (String) messageData.get(<span class="string">&quot;businessId&quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">businessType</span> <span class="operator">=</span> (String) messageData.get(<span class="string">&quot;businessType&quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">data</span> <span class="operator">=</span> (String) messageData.get(<span class="string">&quot;data&quot;</span>);</span><br><span class="line">            </span><br><span class="line">            log.info(<span class="string">&quot;开始处理消息 - ID: &#123;&#125;, 业务类型: &#123;&#125;&quot;</span>, businessId, businessType);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 执行具体的业务逻辑（这里可以根据businessType分发到不同的处理器）</span></span><br><span class="line">            handleBusinessLogic(businessType, data);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 手动确认消息</span></span><br><span class="line">            stringRedisTemplate.opsForStream()</span><br><span class="line">                    .acknowledge(STREAM_KEY, GROUP_NAME, message.getId());</span><br><span class="line">            </span><br><span class="line">            log.info(<span class="string">&quot;消息处理完成 - ID: &#123;&#125;&quot;</span>, businessId);</span><br><span class="line">            </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.error(<span class="string">&quot;处理消息失败: &#123;&#125;&quot;</span>, e.getMessage(), e);</span><br><span class="line">            <span class="comment">// 这里可以根据业务需要决定是否重试或丢弃消息</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 执行具体的业务逻辑</span></span><br><span class="line"><span class="comment">     * 这里可以根据业务类型分发到不同的处理器</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">handleBusinessLogic</span><span class="params">(String businessType, String data)</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> (businessType) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Order&quot;</span>:</span><br><span class="line">                handleOrderLogic(data);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Payment&quot;</span>:</span><br><span class="line">                handlePaymentLogic(data);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Notification&quot;</span>:</span><br><span class="line">                handleNotificationLogic(data);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                log.warn(<span class="string">&quot;未知的业务类型: &#123;&#125;&quot;</span>, businessType);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">handleOrderLogic</span><span class="params">(String data)</span> &#123;</span><br><span class="line">        <span class="comment">// 订单相关业务逻辑</span></span><br><span class="line">        log.info(<span class="string">&quot;处理订单业务: &#123;&#125;&quot;</span>, data);</span><br><span class="line">        <span class="comment">// 实际业务处理...</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">handlePaymentLogic</span><span class="params">(String data)</span> &#123;</span><br><span class="line">        <span class="comment">// 支付相关业务逻辑</span></span><br><span class="line">        log.info(<span class="string">&quot;处理支付业务: &#123;&#125;&quot;</span>, data);</span><br><span class="line">        <span class="comment">// 实际业务处理...</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">handleNotificationLogic</span><span class="params">(String data)</span> &#123;</span><br><span class="line">        <span class="comment">// 通知相关业务逻辑</span></span><br><span class="line">        log.info(<span class="string">&quot;处理通知业务: &#123;&#125;&quot;</span>, data);</span><br><span class="line">        <span class="comment">// 实际业务处理...</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理Pending List中的消息</span></span><br><span class="line"><span class="comment">     * 当消费者处理消息异常时，处理未确认的消息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">handlePendingList</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 获取Pending List中的消息</span></span><br><span class="line">                List&lt;MapRecord&lt;String, Object, Object&gt;&gt; pendingMessages = stringRedisTemplate.opsForStream()</span><br><span class="line">                        .read(Consumer.from(GROUP_NAME, CONSUMER_NAME),</span><br><span class="line">                              StreamReadOptions.empty().count(<span class="number">1</span>),</span><br><span class="line">                              StreamOffset.create(STREAM_KEY, ReadOffset.from(<span class="string">&quot;0&quot;</span>)));</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> (pendingMessages != <span class="literal">null</span> &amp;&amp; !pendingMessages.isEmpty()) &#123;</span><br><span class="line">                    <span class="keyword">for</span> (MapRecord&lt;String, Object, Object&gt; message : pendingMessages) &#123;</span><br><span class="line">                        processMessage(message);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 没有更多pending消息，退出循环</span></span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                log.error(<span class="string">&quot;处理Pending List异常&quot;</span>, e);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Redis 提供了多种方式实现消息队列，每种方式都有其适用场景：</p>
+<ol>
+<li><strong>基于 List</strong>：适合简单的单消费者场景，实现简单但功能有限。</li>
+<li><strong>基于 PubSub</strong>：适合消息广播场景，但不保证消息可靠性。</li>
+<li><strong>基于 Stream</strong>：功能最完善，支持消费者组、消息确认、故障恢复等高级特性，是生产环境的推荐选择。</li>
+</ol>
+<p>在实际项目中，推荐使用 Stream 方式实现消息队列，它提供了完整的消息队列解决方案，既保证了消息的可靠性，又支持水平扩展。通过合理的代码架构设计，可以构建出既通用又高效的异步消息处理系统。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cxhahalala.github.io">Cx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cxhahalala.github.io/posts/redis/redis-message-queue/">https://cxhahalala.github.io/posts/redis/redis-message-queue/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cxhahalala.github.io" target="_blank">Cx`s Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/redis/">redis</a><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></div><div class="post-share"><div class="social-share" data-image="https://w.wallhaven.cc/full/k8/wallhaven-k89wk6.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/posts/test/" title="test"><img class="cover" src="https://w.wallhaven.cc/full/9o/wallhaven-9o57ox.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">test</div></div><div class="info-2"><div class="info-item-1">这是一个用来测试的文章草拜拜你个臭弟弟 </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">1.</span> <span class="toc-text">Redis消息队列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">1.1.</span> <span class="toc-text">什么是消息队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EList%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">1.2.</span> <span class="toc-text">基于List实现的消息队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EPubSub%E7%9A%84%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">1.3.</span> <span class="toc-text">基于PubSub的消息队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EStream%E7%9A%84%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">1.4.</span> <span class="toc-text">基于Stream的消息队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EStream%E7%9A%84%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-%E6%B6%88%E8%B4%B9%E8%80%85%E7%BB%84"><span class="toc-number">1.5.</span> <span class="toc-text">基于Stream的消息队列-消费者组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E7%9A%84Stream%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">Redis的Stream消息队列实现异步操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E5%88%B0Stream%E9%98%9F%E5%88%97"><span class="toc-number">2.1.</span> <span class="toc-text">发送消息到Stream队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E6%B6%88%E6%81%AF%E7%9A%84%E9%80%9A%E7%94%A8%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.2.</span> <span class="toc-text">消费消息的通用实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(https://w.wallhaven.cc/full/k8/wallhaven-k89wk6.png);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Cx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script></div></body></html>
