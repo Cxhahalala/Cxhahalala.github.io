@@ -192,7 +192,7 @@
       typeSpeed: 150,
       loop: true,
       backSpeed: 50,
-    }, null))
+    }, {"typeSpeed":70,"backSpeed":40,"startDelay":500,"backDelay":2200,"loop":true}))
   },
   run: subtitleType => {
     if (true) {
@@ -207,7 +207,7 @@
   },
   processSubtitle: (content, extraContents = []) => {
     if (true) {
-      const sub = ["天行健，君子以自强不息","今日事，今日毕"].slice()
+      const sub = ["天行健，君子以自强不息","海压竹枝低复举，风吹山角晦还明","愿历尽千帆，归来仍是少年 💕","探索技术无止境，记录代码与生活 ✨"].slice()
 
       if (extraContents.length > 0) {
         sub.unshift(...extraContents)
@@ -228,7 +228,7 @@
 }
 btf.addGlobalFn('pjaxSendOnce', () => { typed && typed.destroy() }, 'typedDestroy')
 </script><script>function subtitleType () {
-  typedJSFn.processSubtitle(["天行健，君子以自强不息","今日事，今日毕"])
+  typedJSFn.processSubtitle(["天行健，君子以自强不息","海压竹枝低复举，风吹山角晦还明","愿历尽千帆，归来仍是少年 💕","探索技术无止境，记录代码与生活 ✨"])
 }
 typedJSFn.run(subtitleType)</script><script>(() => {
   const parseViewBox = viewBox => {

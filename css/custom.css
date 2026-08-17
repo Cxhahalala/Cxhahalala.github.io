@@ -1,8 +1,42 @@
-/* ========================================================
-   Butterfly 定制：首屏透明/滑动变色收窄导航栏、冷感灰白底色 + 纯白质感卡片
-   ======================================================== */
+/* 导入人文书卷风字体：霞鹜文楷 (LXGW WenKai) + Fira Code */
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
 
-/* 1. 全局背景色块（图四同款高级偏深冷灰白，衬托纯白卡片，层次分明） */
+/* 全局字体渲染平滑与字距优化 */
+body {
+  font-family: 'LXGW WenKai Screen', 'LXGW WenKai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  letter-spacing: 0.015em !important;
+}
+
+/* 代码块等宽字体 */
+code, pre, kbd, samp {
+  font-family: 'Fira Code', 'JetBrains Mono', Menlo, Consolas, Monaco, monospace !important;
+}
+
+/* 1. 现代化极细胶囊滚动条 (Feature 1) */
+::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4) !important;
+  border-radius: 999px !important;
+  transition: background 0.3s ease !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6 !important;
+}
+
+/* 2. 全局背景色块（图四同款高级偏深冷灰白，衬托纯白卡片，层次分明） */
 html, body {
   background-color: #edf1f7 !important;
 }
@@ -21,7 +55,7 @@ html, body {
   display: block !important;
 }
 
-/* 2. 导航栏基础通用排版（左右收窄，居中，高度 52px） */
+/* 3. 导航栏基础通用排版（左右收窄，居中，高度 52px） */
 #nav {
   position: fixed !important;
   top: 0 !important;
@@ -38,7 +72,7 @@ html, body {
   transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
 }
 
-/* 2.1 首屏顶部（未滚动时）：完全透明无框，白色文字配微投影 */
+/* 3.1 首屏顶部（未滚动时）：完全透明无框，白色文字配微投影 */
 #page-header:not(.nav-fixed) #nav {
   background: transparent !important;
   backdrop-filter: none !important;
@@ -62,7 +96,7 @@ html, body {
   color: #ffffff !important;
 }
 
-/* 2.2 滑动页面后（fixed 状态）：优雅变身为毛玻璃纯白质感 */
+/* 3.2 滑动页面后（fixed 状态）：优雅变身为毛玻璃纯白质感 */
 #page-header.nav-fixed #nav,
 #page-header.not-top-img #nav {
   background: rgba(255, 255, 255, 0.9) !important;
@@ -93,17 +127,17 @@ html, body {
   color: #2563eb !important;
 }
 
-/* 2.3 阅读向下滑动时：导航栏平滑滑出隐藏 */
+/* 3.3 阅读向下滑动时：导航栏平滑滑出隐藏 */
 #page-header.nav-fixed:not(.nav-visible) #nav {
   transform: translate(-50%, -100%) !important;
 }
 
-/* 2.4 向上轻微滑动时：导航栏立刻滑入呈现 */
+/* 3.4 向上轻微滑动时：导航栏立刻滑入呈现 */
 #page-header.nav-fixed.nav-visible #nav {
   transform: translate(-50%, 0) !important;
 }
 
-/* 2.5 导航栏左侧：博客名牢固锁定在最左侧 */
+/* 3.5 导航栏左侧：博客名牢固锁定在最左侧 */
 #nav #blog-info {
   flex-shrink: 0 !important;
 }
@@ -115,7 +149,7 @@ html, body {
   line-height: 1 !important;
 }
 
-/* 2.6 导航栏右侧菜单：各导航项均匀分布排列，文字与图标精准水平垂直居中 */
+/* 3.6 导航栏右侧菜单：各导航项均匀分布排列，文字与图标精准水平垂直居中 */
 #nav #menus {
   display: flex !important;
   align-items: center !important;
@@ -167,7 +201,7 @@ html, body {
   padding: 0 !important;
 }
 
-/* 3. 左侧侧边栏（个人简介 + 公告栏）吸顶固定 */
+/* 4. 左侧侧边栏（个人简介 + 公告栏）吸顶固定 */
 @media screen and (min-width: 900px) {
   #aside-content {
     position: sticky !important;
@@ -178,7 +212,7 @@ html, body {
   }
 }
 
-/* 4. 纯白高亮卡片（文章卡片、侧边栏卡片、正文容器） */
+/* 5. 纯白高亮卡片（文章卡片、侧边栏卡片、正文容器） */
 #aside-content .card-widget,
 .recent-post-item,
 #page,
@@ -192,14 +226,14 @@ html, body {
   position: relative !important;
 }
 
-/* 5. 卡片悬浮微抬动效 */
+/* 6. 卡片悬浮微抬动效 */
 .recent-post-item:hover,
 #aside-content .card-widget:hover {
   transform: translateY(-4px) !important;
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* 6. 文章卡片尺寸与排版精致化控制（桌面端） */
+/* 7. 文章卡片尺寸与排版精致化控制（桌面端） */
 @media screen and (min-width: 768px) {
   .recent-post-item {
     height: 200px !important;
@@ -255,7 +289,7 @@ html, body {
   }
 }
 
-/* 7. 文章标题前缀蓝色竖条 */
+/* 8. 文章标题前缀蓝色竖条 */
 .recent-post-item .article-title::before {
   content: "" !important;
   display: inline-block !important;
@@ -280,7 +314,7 @@ html, body {
   color: #2563eb !important;
 }
 
-/* 8. 文章元信息与简介排版 */
+/* 9. 文章元信息与简介排版 */
 .recent-post-item .article-meta-wrap {
   font-size: 12.5px !important;
   color: #64748b !important;
@@ -298,7 +332,7 @@ html, body {
   font-size: 13.8px !important;
 }
 
-/* 9. 纯文字卡片（【仅限无封面图】即 .no-cover）：右侧显示淡蓝色圆角箭头胶囊按钮 */
+/* 10. 纯文字卡片（【仅限无封面图】即 .no-cover）：右侧显示淡蓝色圆角箭头胶囊按钮 */
 .recent-post-item .recent-post-info.no-cover {
   width: 100% !important;
   padding-right: 70px !important;
@@ -333,7 +367,62 @@ html, body {
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
 }
 
-/* 10. 页脚纯净风格与精致徽章 */
+/* 11. 正文行内代码芯片 & 引用块精美微投影 (Feature 3) */
+#article-container code:not([class*="language-"]) {
+  background: #e2e8f0 !important;
+  color: #2563eb !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+  font-family: 'JetBrains Mono', 'Fira Code', Menlo, Consolas, Monaco, monospace !important;
+  font-size: 0.88em !important;
+  border: 1px solid rgba(203, 213, 225, 0.9) !important;
+  margin: 0 3px !important;
+  font-weight: 500 !important;
+  word-break: break-word !important;
+}
+
+#article-container blockquote {
+  border-left: 4px solid #3b82f6 !important;
+  background: #f8fafc !important;
+  border-radius: 0 14px 14px 0 !important;
+  padding: 14px 20px !important;
+  margin: 20px 0 !important;
+  color: #475569 !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03) !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.6) !important;
+  border-right: 1px solid rgba(226, 232, 240, 0.6) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
+}
+
+/* 12. 右下角纯白毛玻璃悬浮操作球 (Feature 6) */
+#rightside > div > button,
+#rightside > div > a {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  color: #475569 !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+  border-radius: 12px !important;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  margin-bottom: 8px !important;
+  width: 38px !important;
+  height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#rightside > div > button:hover,
+#rightside > div > a:hover {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35) !important;
+  border-color: #2563eb !important;
+}
+
+/* 13. 页脚纯净风格与精致徽章 */
 #footer {
   background: transparent !important;
   color: #64748b !important;
@@ -388,22 +477,22 @@ html, body {
   color: #2563eb !important;
 }
 
-/* 11. 深色模式适配 */
+/* 14. OLED 纯净深空夜色优化 (Feature 7) */
 [data-theme="dark"] html,
 [data-theme="dark"] body,
 [data-theme="dark"] #web_bg {
-  background: #0f172a !important;
+  background: #0b0f19 !important;
   background-image: none !important;
 }
 
 [data-theme="dark"] #page-header.nav-fixed #nav,
 [data-theme="dark"] #page-header.not-top-img #nav,
 [data-theme="dark"] #page-header.nav-visible #nav {
-  background: rgba(30, 41, 59, 0.88) !important;
+  background: rgba(15, 23, 42, 0.85) !important;
   border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
 }
 
 [data-theme="dark"] #nav #blog-info a,
@@ -421,9 +510,9 @@ html, body {
 [data-theme="dark"] #page,
 [data-theme="dark"] #post,
 [data-theme="dark"] .layout > div:first-child:not(.recent-posts) {
-  background: #1e293b !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+  background: #131b2e !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
 }
 
 [data-theme="dark"] .recent-post-item .article-title {
@@ -432,6 +521,28 @@ html, body {
 
 [data-theme="dark"] .recent-post-item .content {
   color: #94a3b8 !important;
+}
+
+[data-theme="dark"] #article-container code:not([class*="language-"]) {
+  background: #1e293b !important;
+  color: #60a5fa !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] #article-container blockquote {
+  background: #1e293b !important;
+  border-left: 4px solid #60a5fa !important;
+  color: #cbd5e1 !important;
+  border-top-color: rgba(255, 255, 255, 0.05) !important;
+  border-right-color: rgba(255, 255, 255, 0.05) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] #rightside > div > button,
+[data-theme="dark"] #rightside > div > a {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
 }
 
 [data-theme="dark"] #footer {
@@ -443,4 +554,8 @@ html, body {
   background: #1e293b !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: #94a3b8 !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2) !important;
 }
