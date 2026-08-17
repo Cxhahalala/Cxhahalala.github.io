@@ -1,5 +1,5 @@
 /* ========================================================
-   Butterfly 定制：贴顶无缝导航栏、阅读自动隐藏、冷感灰白底色 + 纯白质感卡片
+   Butterfly 定制：贴顶收窄居中导航栏、阅读自动隐藏、冷感灰白底色 + 纯白质感卡片
    ======================================================== */
 
 /* 1. 全局背景色块（图四同款高级偏深冷灰白，衬托纯白卡片，层次分明） */
@@ -21,39 +21,42 @@ html, body {
   display: block !important;
 }
 
-/* 2. 贴顶无缝窄条导航栏（零缝隙贴顶，底部圆角，高度 52px） */
+/* 2. 贴顶收窄居中导航栏（左右收窄，零缝隙贴顶，底部圆角，高度 52px） */
 #page-header.nav-fixed #nav,
 #page-header.not-top-img #nav,
 #page-header.nav-visible #nav,
 #page-header #nav {
   position: fixed !important;
   top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
+  left: 50% !important;
+  transform: translate(-50%, 0) !important;
+  width: min(1200px, 88%) !important;
   height: 52px !important;
   z-index: 100 !important;
   background: rgba(255, 255, 255, 0.88) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  border-radius: 0 0 16px 16px !important;
+  border-radius: 0 0 18px 18px !important;
+  border-left: 1px solid rgba(226, 232, 240, 0.9) !important;
+  border-right: 1px solid rgba(226, 232, 240, 0.9) !important;
   border-bottom: 1px solid rgba(226, 232, 240, 0.9) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
-  padding: 0 36px !important;
+  border-top: none !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05) !important;
+  padding: 0 28px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  transform: translateY(0) !important;
   transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s ease !important;
 }
 
 /* 阅读向下滑动时：导航栏平滑滑出隐藏 */
 #page-header.nav-fixed:not(.nav-visible) #nav {
-  transform: translateY(-100%) !important;
+  transform: translate(-50%, -100%) !important;
 }
 
 /* 向上轻微滑动时：导航栏立刻滑入呈现 */
 #page-header.nav-fixed.nav-visible #nav {
-  transform: translateY(0) !important;
+  transform: translate(-50%, 0) !important;
 }
 
 /* 导航栏左侧：博客名牢固锁定在最左侧 */
@@ -82,7 +85,7 @@ html, body {
   align-items: center !important;
   justify-content: space-evenly !important;
   width: 100% !important;
-  max-width: 560px !important;
+  max-width: 520px !important;
 }
 
 #nav .menus_items .menus_item {
@@ -91,7 +94,7 @@ html, body {
 
 #nav .menus_items .menus_item .site-page {
   border-radius: 10px !important;
-  padding: 5px 14px !important;
+  padding: 5px 13px !important;
   font-size: 13.8px !important;
   font-weight: 500 !important;
   color: #334155 !important;
@@ -291,6 +294,8 @@ html, body {
 [data-theme="dark"] #page-header.not-top-img #nav,
 [data-theme="dark"] #page-header.nav-visible #nav {
   background: rgba(30, 41, 59, 0.88) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
 }
