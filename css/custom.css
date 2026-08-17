@@ -1,5 +1,5 @@
 /* ========================================================
-   Butterfly 定制：贴顶收窄居中导航栏、阅读自动隐藏、冷感灰白底色 + 纯白质感卡片
+   Butterfly 定制：首屏透明/滑动变色收窄导航栏、冷感灰白底色 + 纯白质感卡片
    ======================================================== */
 
 /* 1. 全局背景色块（图四同款高级偏深冷灰白，衬托纯白卡片，层次分明） */
@@ -21,11 +21,8 @@ html, body {
   display: block !important;
 }
 
-/* 2. 贴顶收窄居中导航栏（左右收窄，零缝隙贴顶，底部圆角，高度 52px） */
-#page-header.nav-fixed #nav,
-#page-header.not-top-img #nav,
-#page-header.nav-visible #nav,
-#page-header #nav {
+/* 2. 导航栏基础通用排版（左右收窄，居中，高度 52px） */
+#nav {
   position: fixed !important;
   top: 0 !important;
   left: 50% !important;
@@ -33,33 +30,80 @@ html, body {
   width: min(1200px, 88%) !important;
   height: 52px !important;
   z-index: 100 !important;
-  background: rgba(255, 255, 255, 0.88) !important;
+  padding: 0 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border-radius: 0 0 18px 18px !important;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
+}
+
+/* 2.1 首屏顶部（未滚动时）：完全透明无框，白色文字配微投影 */
+#page-header:not(.nav-fixed) #nav {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#page-header:not(.nav-fixed) #nav #blog-info a {
+  color: #ffffff !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6) !important;
+}
+
+#page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page {
+  color: #ffffff !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6) !important;
+}
+
+#page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+}
+
+/* 2.2 滑动页面后（fixed 状态）：优雅变身为毛玻璃纯白质感 */
+#page-header.nav-fixed #nav,
+#page-header.not-top-img #nav {
+  background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  border-radius: 0 0 18px 18px !important;
   border-left: 1px solid rgba(226, 232, 240, 0.9) !important;
   border-right: 1px solid rgba(226, 232, 240, 0.9) !important;
   border-bottom: 1px solid rgba(226, 232, 240, 0.9) !important;
   border-top: none !important;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05) !important;
-  padding: 0 28px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s ease !important;
 }
 
-/* 阅读向下滑动时：导航栏平滑滑出隐藏 */
+#page-header.nav-fixed #nav #blog-info a,
+#page-header.not-top-img #nav #blog-info a {
+  color: #1e293b !important;
+  text-shadow: none !important;
+}
+
+#page-header.nav-fixed #nav .menus_items .menus_item .site-page,
+#page-header.not-top-img #nav .menus_items .menus_item .site-page {
+  color: #334155 !important;
+  text-shadow: none !important;
+}
+
+#page-header.nav-fixed #nav .menus_items .menus_item .site-page:hover,
+#page-header.not-top-img #nav .menus_items .menus_item .site-page:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #2563eb !important;
+}
+
+/* 2.3 阅读向下滑动时：导航栏平滑滑出隐藏 */
 #page-header.nav-fixed:not(.nav-visible) #nav {
   transform: translate(-50%, -100%) !important;
 }
 
-/* 向上轻微滑动时：导航栏立刻滑入呈现 */
+/* 2.4 向上轻微滑动时：导航栏立刻滑入呈现 */
 #page-header.nav-fixed.nav-visible #nav {
   transform: translate(-50%, 0) !important;
 }
 
-/* 导航栏左侧：博客名牢固锁定在最左侧 */
+/* 2.5 导航栏左侧：博客名牢固锁定在最左侧 */
 #nav #blog-info {
   flex-shrink: 0 !important;
 }
@@ -67,11 +111,11 @@ html, body {
 #nav #blog-info a {
   font-weight: 700 !important;
   font-size: 1.15rem !important;
-  color: #1e293b !important;
   letter-spacing: 0.5px !important;
+  line-height: 1 !important;
 }
 
-/* 导航栏右侧菜单：各导航项均匀分布排列 */
+/* 2.6 导航栏右侧菜单：各导航项均匀分布排列，文字与图标精准水平垂直居中 */
 #nav #menus {
   display: flex !important;
   align-items: center !important;
@@ -94,20 +138,33 @@ html, body {
 
 #nav .menus_items .menus_item .site-page {
   border-radius: 10px !important;
-  padding: 5px 13px !important;
+  padding: 6px 14px !important;
   font-size: 13.8px !important;
   font-weight: 500 !important;
-  color: #334155 !important;
   transition: all 0.25s ease !important;
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
 }
 
-#nav .menus_items .menus_item .site-page:hover {
-  background: rgba(59, 130, 246, 0.1) !important;
-  color: #2563eb !important;
-  transform: translateY(-1px) !important;
+#nav .menus_items .menus_item .site-page i {
+  font-size: 14px !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#nav .menus_items .menus_item .site-page span {
+  font-size: 13.8px !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* 3. 左侧侧边栏（个人简介 + 公告栏）吸顶固定 */
@@ -276,10 +333,59 @@ html, body {
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
 }
 
-/* 10. 页脚纯净质感 */
+/* 10. 页脚纯净风格与精致徽章 */
 #footer {
   background: transparent !important;
   color: #64748b !important;
+  padding: 36px 20px 40px 20px !important;
+  margin-top: 40px !important;
+  position: relative !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.8) !important;
+}
+
+#footer::before {
+  display: none !important;
+  content: none !important;
+}
+
+#footer-wrap {
+  color: #64748b !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 12px !important;
+  font-size: 13.5px !important;
+}
+
+#footer-wrap a {
+  color: #475569 !important;
+}
+
+.footer-badges {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  margin-bottom: 4px !important;
+}
+
+.footer-badges .badge-item {
+  background: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
+  border-radius: 20px !important;
+  padding: 5px 15px !important;
+  font-size: 12.5px !important;
+  color: #475569 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.25s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.footer-badges .badge-item:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06) !important;
+  color: #2563eb !important;
 }
 
 /* 11. 深色模式适配 */
@@ -329,5 +435,12 @@ html, body {
 }
 
 [data-theme="dark"] #footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .footer-badges .badge-item {
+  background: #1e293b !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: #94a3b8 !important;
 }
