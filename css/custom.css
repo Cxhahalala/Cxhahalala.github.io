@@ -1,0 +1,328 @@
+/* ========================================================
+   Butterfly 定制：贴顶无缝导航栏、阅读自动隐藏、冷感灰白底色 + 纯白质感卡片
+   ======================================================== */
+
+/* 1. 全局背景色块（图四同款高级偏深冷灰白，衬托纯白卡片，层次分明） */
+html, body {
+  background-color: #edf1f7 !important;
+}
+
+#web_bg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: -999 !important;
+  background: #edf1f7 !important;
+  background-image: radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.4) 0px, transparent 50%),
+                    radial-gradient(at 100% 100%, rgba(224, 231, 255, 0.4) 0px, transparent 50%),
+                    radial-gradient(at 50% 50%, #edf1f7 0px, #e5eaf2 100%) !important;
+  display: block !important;
+}
+
+/* 2. 贴顶无缝窄条导航栏（零缝隙贴顶，底部圆角，高度 52px） */
+#page-header.nav-fixed #nav,
+#page-header.not-top-img #nav,
+#page-header.nav-visible #nav,
+#page-header #nav {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 52px !important;
+  z-index: 100 !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-radius: 0 0 16px 16px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  padding: 0 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  transform: translateY(0) !important;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s ease !important;
+}
+
+/* 阅读向下滑动时：导航栏平滑滑出隐藏 */
+#page-header.nav-fixed:not(.nav-visible) #nav {
+  transform: translateY(-100%) !important;
+}
+
+/* 向上轻微滑动时：导航栏立刻滑入呈现 */
+#page-header.nav-fixed.nav-visible #nav {
+  transform: translateY(0) !important;
+}
+
+/* 导航栏左侧：博客名牢固锁定在最左侧 */
+#nav #blog-info {
+  flex-shrink: 0 !important;
+}
+
+#nav #blog-info a {
+  font-weight: 700 !important;
+  font-size: 1.15rem !important;
+  color: #1e293b !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* 导航栏右侧菜单：各导航项均匀分布排列 */
+#nav #menus {
+  display: flex !important;
+  align-items: center !important;
+  flex: 1 !important;
+  justify-content: flex-end !important;
+  margin-left: 30px !important;
+}
+
+#nav #menus .menus_items {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-evenly !important;
+  width: 100% !important;
+  max-width: 560px !important;
+}
+
+#nav .menus_items .menus_item {
+  margin: 0 !important;
+}
+
+#nav .menus_items .menus_item .site-page {
+  border-radius: 10px !important;
+  padding: 5px 14px !important;
+  font-size: 13.8px !important;
+  font-weight: 500 !important;
+  color: #334155 !important;
+  transition: all 0.25s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+#nav .menus_items .menus_item .site-page:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #2563eb !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 3. 左侧侧边栏（个人简介 + 公告栏）吸顶固定 */
+@media screen and (min-width: 900px) {
+  #aside-content {
+    position: sticky !important;
+    top: 72px !important;
+    max-height: calc(100vh - 85px) !important;
+    align-self: flex-start !important;
+    z-index: 10 !important;
+  }
+}
+
+/* 4. 纯白高亮卡片（文章卡片、侧边栏卡片、正文容器） */
+#aside-content .card-widget,
+.recent-post-item,
+#page,
+#post,
+.layout > div:first-child:not(.recent-posts) {
+  background: #ffffff !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  position: relative !important;
+}
+
+/* 5. 卡片悬浮微抬动效 */
+.recent-post-item:hover,
+#aside-content .card-widget:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* 6. 文章卡片尺寸与排版精致化控制（桌面端） */
+@media screen and (min-width: 768px) {
+  .recent-post-item {
+    height: 200px !important;
+    margin-top: 18px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    overflow: hidden !important;
+  }
+
+  .recent-post-item .post_cover {
+    width: 44% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .recent-post-item .post_cover.right {
+    order: 2 !important;
+  }
+
+  .recent-post-item .post_cover img.post-bg {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  }
+
+  .recent-post-item:hover .post_cover img.post-bg {
+    transform: scale(1.08) !important;
+  }
+
+  .recent-post-item .recent-post-info {
+    width: 56% !important;
+    padding: 22px 28px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+}
+
+/* 移动端卡片自适应 */
+@media screen and (max-width: 767px) {
+  .recent-post-item {
+    height: auto !important;
+    flex-direction: column !important;
+  }
+  .recent-post-item .post_cover {
+    width: 100% !important;
+    height: 180px !important;
+  }
+  .recent-post-item .recent-post-info {
+    width: 100% !important;
+    padding: 16px !important;
+  }
+}
+
+/* 7. 文章标题前缀蓝色竖条 */
+.recent-post-item .article-title::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 4px !important;
+  height: 1.15em !important;
+  background: #3b82f6 !important;
+  border-radius: 2px !important;
+  margin-right: 8px !important;
+  vertical-align: -2px !important;
+}
+
+.recent-post-item .article-title {
+  font-size: 1.22rem !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  margin-bottom: 6px !important;
+  color: #1e293b !important;
+  transition: color 0.25s ease !important;
+}
+
+.recent-post-item .article-title:hover {
+  color: #2563eb !important;
+}
+
+/* 8. 文章元信息与简介排版 */
+.recent-post-item .article-meta-wrap {
+  font-size: 12.5px !important;
+  color: #64748b !important;
+  margin-bottom: 8px !important;
+}
+
+.recent-post-item .content {
+  color: #475569 !important;
+  line-height: 1.65 !important;
+  margin-top: 4px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  font-size: 13.8px !important;
+}
+
+/* 9. 纯文字卡片（【仅限无封面图】即 .no-cover）：右侧显示淡蓝色圆角箭头胶囊按钮 */
+.recent-post-item .recent-post-info.no-cover {
+  width: 100% !important;
+  padding-right: 70px !important;
+  position: relative !important;
+}
+
+.recent-post-item .recent-post-info.no-cover::after {
+  content: "\f054" !important;
+  font-family: "Font Awesome 6 Free", "FontAwesome" !important;
+  font-weight: 900 !important;
+  position: absolute !important;
+  right: 18px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 32px !important;
+  height: 56px !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #2563eb !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  transition: all 0.3s ease !important;
+  pointer-events: none !important;
+}
+
+.recent-post-item:hover .recent-post-info.no-cover::after {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  transform: translateY(-50%) translateX(3px) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+/* 10. 页脚纯净质感 */
+#footer {
+  background: transparent !important;
+  color: #64748b !important;
+}
+
+/* 11. 深色模式适配 */
+[data-theme="dark"] html,
+[data-theme="dark"] body,
+[data-theme="dark"] #web_bg {
+  background: #0f172a !important;
+  background-image: none !important;
+}
+
+[data-theme="dark"] #page-header.nav-fixed #nav,
+[data-theme="dark"] #page-header.not-top-img #nav,
+[data-theme="dark"] #page-header.nav-visible #nav {
+  background: rgba(30, 41, 59, 0.88) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] #nav #blog-info a,
+[data-theme="dark"] #nav .menus_items .menus_item .site-page {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] #nav .menus_items .menus_item .site-page:hover {
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
+}
+
+[data-theme="dark"] #aside-content .card-widget,
+[data-theme="dark"] .recent-post-item,
+[data-theme="dark"] #page,
+[data-theme="dark"] #post,
+[data-theme="dark"] .layout > div:first-child:not(.recent-posts) {
+  background: #1e293b !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .recent-post-item .article-title {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .recent-post-item .content {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] #footer {
+  color: #94a3b8 !important;
+}
