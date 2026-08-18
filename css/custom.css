@@ -68,18 +68,19 @@ html, body {
   left: 50% !important;
   transform: translate(-50%, 0) !important;
   width: min(1200px, 94%) !important;
-  height: 48px !important;
+  height: 58px !important;
   z-index: 100 !important;
-  padding: 0 20px !important;
+  padding: 0 26px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  border-radius: 12px !important;
+  border-radius: 0 0 16px 16px !important;
   background: rgba(255, 255, 255, 0.65) !important;
   backdrop-filter: blur(16px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
   border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+  border-top: none !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07) !important;
   transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), 
               opacity 0.3s ease, 
               background 0.3s ease, 
@@ -210,8 +211,8 @@ html, body {
 
 #nav .menus_items .menus_item .site-page {
   border-radius: 10px !important;
-  padding: 7px 13px !important;
-  font-size: 14px !important;
+  padding: 8px 15px !important;
+  font-size: 14.5px !important;
   font-weight: 500 !important;
   transition: all 0.25s ease !important;
   display: inline-flex !important;
@@ -265,16 +266,42 @@ html, body {
   border-radius: 18px !important;
   border: 1px solid rgba(226, 232, 240, 0.85) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+              box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+              border-color 0.35s ease, 
+              background 0.35s ease !important;
   position: relative !important;
 }
 
-/* 6. 卡片悬浮微抬动效 */
+/* 6. 卡片悬浮微抬与柔光弥散动效 */
 .recent-post-item:hover,
 #aside-content .card-widget:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  transform: translateY(-6px) !important;
+  box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(59, 130, 246, 0.16) !important;
+  border-color: rgba(147, 197, 253, 0.6) !important;
 }
+
+/* 6.1 首页文章卡片首屏交错淡入动效 (Staggered Entrance) */
+@keyframes elegantFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.recent-post-items .recent-post-item {
+  animation: elegantFadeInUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+.recent-post-items .recent-post-item:nth-child(1) { animation-delay: 0.04s; }
+.recent-post-items .recent-post-item:nth-child(2) { animation-delay: 0.10s; }
+.recent-post-items .recent-post-item:nth-child(3) { animation-delay: 0.16s; }
+.recent-post-items .recent-post-item:nth-child(4) { animation-delay: 0.22s; }
+.recent-post-items .recent-post-item:nth-child(5) { animation-delay: 0.28s; }
+.recent-post-items .recent-post-item:nth-child(6) { animation-delay: 0.34s; }
 
 /* 7. 文章卡片尺寸与排版精致化控制（桌面端） */
 @media screen and (min-width: 768px) {
@@ -290,7 +317,10 @@ html, body {
     width: 44% !important;
     height: 100% !important;
     overflow: hidden !important;
+    position: relative !important;
   }
+
+
 
   .recent-post-item .post_cover.right {
     order: 2 !important;
@@ -300,11 +330,14 @@ html, body {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    filter: brightness(0.98) contrast(1.02) !important;
+    transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), 
+                filter 0.7s cubic-bezier(0.25, 1, 0.5, 1) !important;
   }
 
   .recent-post-item:hover .post_cover img.post-bg {
-    transform: scale(1.08) !important;
+    transform: scale(1.07) !important;
+    filter: brightness(1.03) contrast(1.04) saturate(108%) !important;
   }
 
   .recent-post-item .recent-post-info {
@@ -325,6 +358,8 @@ html, body {
   .recent-post-item .post_cover {
     width: 100% !important;
     height: 180px !important;
+    overflow: hidden !important;
+    position: relative !important;
   }
   .recent-post-item .recent-post-info {
     width: 100% !important;
@@ -332,16 +367,25 @@ html, body {
   }
 }
 
-/* 8. 文章标题前缀蓝色竖条 */
+/* 8. 文章标题前缀指示条与微位移动效 */
 .recent-post-item .article-title::before {
   content: "" !important;
   display: inline-block !important;
   width: 4px !important;
   height: 1.15em !important;
-  background: #3b82f6 !important;
-  border-radius: 2px !important;
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%) !important;
+  border-radius: 4px !important;
   margin-right: 8px !important;
   vertical-align: -2px !important;
+  transition: height 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+              box-shadow 0.3s ease, 
+              transform 0.3s ease !important;
+}
+
+.recent-post-item:hover .article-title::before {
+  height: 1.25em !important;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.6) !important;
+  transform: scaleY(1.08) !important;
 }
 
 .recent-post-item .article-title {
@@ -350,11 +394,14 @@ html, body {
   line-height: 1.35 !important;
   margin-bottom: 6px !important;
   color: #1e293b !important;
-  transition: color 0.25s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  transition: color 0.3s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
 }
 
-.recent-post-item .article-title:hover {
+.recent-post-item:hover .article-title {
   color: #2563eb !important;
+  transform: translateX(4px) !important;
 }
 
 /* 9. 文章元信息与简介排版 */
@@ -362,6 +409,16 @@ html, body {
   font-size: 12.5px !important;
   color: #64748b !important;
   margin-bottom: 8px !important;
+  transition: color 0.3s ease !important;
+}
+
+.recent-post-item .article-meta-wrap i {
+  transition: transform 0.3s ease, color 0.3s ease !important;
+}
+
+.recent-post-item:hover .article-meta-wrap i {
+  color: #3b82f6 !important;
+  transform: translateY(-1px) !important;
 }
 
 .recent-post-item .content {
@@ -373,6 +430,31 @@ html, body {
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   font-size: 13.8px !important;
+}
+
+/* 9.1 个人头像微动效 (Avatar Spin & Halo) */
+#aside-content .card-info .avatar-img img {
+  border-radius: 999px !important;
+  transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1), 
+              box-shadow 0.5s ease !important;
+}
+
+#aside-content .card-info .avatar-img:hover img {
+  transform: rotate(360deg) scale(1.08) !important;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35) !important;
+}
+
+/* 9.2 Follow Me 关注按钮悬浮流光动效 */
+#card-info-btn {
+  border-radius: 12px !important;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+#card-info-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35) !important;
 }
 
 /* 10. 纯文字卡片（【仅限无封面图】即 .no-cover）：右侧显示淡蓝色圆角箭头胶囊按钮 */
@@ -521,14 +603,15 @@ html, body {
 }
 
 /* 14. OLED 纯净深空夜色优化 (Feature 7) */
-[data-theme="dark"] html,
-[data-theme="dark"] body,
+html[data-theme="dark"],
+html[data-theme="dark"] body,
 [data-theme="dark"] #web_bg {
   background: #0b0f19 !important;
   background-image: none !important;
 }
 
 [data-theme="dark"] #nav,
+[data-theme="dark"] #page-header #nav,
 [data-theme="dark"] #page-header:not(.nav-fixed) #nav,
 [data-theme="dark"] #page-header.nav-fixed #nav,
 [data-theme="dark"] #page-header.not-top-img #nav,
@@ -539,17 +622,32 @@ html, body {
 }
 
 [data-theme="dark"] #nav #blog-info a,
-[data-theme="dark"] #nav .menus_items .menus_item .site-page {
+[data-theme="dark"] #page-header #nav #blog-info a,
+[data-theme="dark"] #page-header:not(.nav-fixed) #nav #blog-info a,
+[data-theme="dark"] #page-header.nav-fixed #nav #blog-info a,
+[data-theme="dark"] #page-header.not-top-img #nav #blog-info a,
+[data-theme="dark"] #nav .menus_items .menus_item .site-page,
+[data-theme="dark"] #page-header #nav .menus_items .menus_item .site-page,
+[data-theme="dark"] #page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page,
+[data-theme="dark"] #page-header.nav-fixed #nav .menus_items .menus_item .site-page,
+[data-theme="dark"] #page-header.not-top-img #nav .menus_items .menus_item .site-page {
   color: #f1f5f9 !important;
+  text-shadow: none !important;
 }
 
-[data-theme="dark"] #nav .menus_items .menus_item .site-page:hover {
+[data-theme="dark"] #nav .menus_items .menus_item .site-page:hover,
+[data-theme="dark"] #page-header #nav .menus_items .menus_item .site-page:hover,
+[data-theme="dark"] #page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page:hover,
+[data-theme="dark"] #page-header.nav-fixed #nav .menus_items .menus_item .site-page:hover,
+[data-theme="dark"] #page-header.not-top-img #nav .menus_items .menus_item .site-page:hover {
   background: rgba(59, 130, 246, 0.22) !important;
   color: #60a5fa !important;
 }
 
 [data-theme="dark"] #nav .menus_items .menus_item .site-page:hover i,
-[data-theme="dark"] #nav .menus_items .menus_item .site-page:hover span {
+[data-theme="dark"] #nav .menus_items .menus_item .site-page:hover span,
+[data-theme="dark"] #page-header #nav .menus_items .menus_item .site-page:hover i,
+[data-theme="dark"] #page-header #nav .menus_items .menus_item .site-page:hover span {
   color: #60a5fa !important;
 }
 
@@ -561,6 +659,40 @@ html, body {
   background: #131b2e !important;
   border: 1px solid rgba(255, 255, 255, 0.06) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .recent-post-item:hover,
+[data-theme="dark"] #aside-content .card-widget:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(96, 165, 250, 0.28), 0 0 24px rgba(59, 130, 246, 0.12) !important;
+  border-color: rgba(96, 165, 250, 0.35) !important;
+}
+
+
+
+
+[data-theme="dark"] #aside-content .author-info-name {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] #aside-content .author-info-description {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] #aside-content .site-data a .headline {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] #aside-content .site-data a .length-num {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] #aside-content .card-announcement .item-headline {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] #aside-content .card-announcement .announcement_content {
+  color: #cbd5e1 !important;
 }
 
 [data-theme="dark"] .recent-post-item .article-title {
@@ -607,3 +739,88 @@ html, body {
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2) !important;
 }
+
+/* 15. 顶部大图底部灵动流体波浪过渡 (Fluid Waves & Gradient Transition) */
+.waves-area {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 65px !important;
+  min-height: 50px !important;
+  max-height: 85px !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+.waves-svg {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+/* 波浪平滑流动关键帧动画 */
+@keyframes waveParallax {
+  0% {
+    transform: translate3d(-90px, 0, 0);
+  }
+  100% {
+    transform: translate3d(85px, 0, 0);
+  }
+}
+
+.parallax > use {
+  animation: waveParallax 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite !important;
+  transition: fill 0.4s ease !important;
+}
+
+.parallax > use.wave-1 {
+  animation-delay: -2s !important;
+  animation-duration: 7s !important;
+  fill: rgba(237, 241, 247, 0.35) !important;
+}
+
+.parallax > use.wave-2 {
+  animation-delay: -3s !important;
+  animation-duration: 10s !important;
+  fill: rgba(237, 241, 247, 0.55) !important;
+}
+
+.parallax > use.wave-3 {
+  animation-delay: -4s !important;
+  animation-duration: 13s !important;
+  fill: rgba(237, 241, 247, 0.75) !important;
+}
+
+.parallax > use.wave-4 {
+  animation-delay: -5s !important;
+  animation-duration: 20s !important;
+  fill: #edf1f7 !important;
+}
+
+/* 暗黑模式波浪深度适配 */
+[data-theme="dark"] .parallax > use.wave-1 {
+  fill: rgba(11, 15, 25, 0.35) !important;
+}
+
+[data-theme="dark"] .parallax > use.wave-2 {
+  fill: rgba(11, 15, 25, 0.55) !important;
+}
+
+[data-theme="dark"] .parallax > use.wave-3 {
+  fill: rgba(11, 15, 25, 0.75) !important;
+}
+
+[data-theme="dark"] .parallax > use.wave-4 {
+  fill: #0b0f19 !important;
+}
+
+/* 下拉箭头层级与位置微调 */
+#scroll-down {
+  z-index: 10 !important;
+  bottom: 22px !important;
+}
+
+
