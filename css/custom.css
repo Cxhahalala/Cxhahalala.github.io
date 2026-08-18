@@ -55,58 +55,85 @@ html, body {
   display: block !important;
 }
 
-/* 3. 导航栏基础通用排版（左右收窄，居中，高度 52px） */
-#nav {
+/* 3. 导航栏基础通用排版（悬浮胶囊式、磨砂质感、居中） */
+#nav,
+#page-header #nav,
+#page-header.nav-fixed #nav,
+#page-header:not(.nav-fixed) #nav,
+#page-header.not-top-img #nav,
+#page-header.nav-visible #nav {
   position: fixed !important;
   top: 0 !important;
+  bottom: auto !important;
   left: 50% !important;
   transform: translate(-50%, 0) !important;
-  width: min(1200px, 88%) !important;
-  height: 52px !important;
+  width: min(1200px, 94%) !important;
+  height: 48px !important;
   z-index: 100 !important;
-  padding: 0 28px !important;
+  padding: 0 20px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  border-radius: 0 0 18px 18px !important;
-  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), 
+              opacity 0.3s ease, 
+              background 0.3s ease, 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease !important;
 }
 
-/* 3.1 首屏顶部（未滚动时）：完全透明无框，白色文字配微投影 */
+/* 3.1 顶部大图首屏状态：磨砂白底搭配清晰深色文字 */
 #page-header:not(.nav-fixed) #nav {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-#page-header:not(.nav-fixed) #nav #blog-info a {
-  color: #ffffff !important;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6) !important;
-}
-
-#page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page {
-  color: #ffffff !important;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6) !important;
-}
-
-#page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page:hover {
-  background: rgba(255, 255, 255, 0.22) !important;
-  color: #ffffff !important;
-}
-
-/* 3.2 滑动页面后（fixed 状态）：优雅变身为毛玻璃纯白质感 */
-#page-header.nav-fixed #nav,
-#page-header.not-top-img #nav {
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  border-left: 1px solid rgba(226, 232, 240, 0.9) !important;
-  border-right: 1px solid rgba(226, 232, 240, 0.9) !important;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.9) !important;
-  border-top: none !important;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08) !important;
+}
+
+#page-header:not(.nav-fixed) #nav #blog-info a,
+#nav #blog-info a {
+  color: #1e293b !important;
+  font-weight: 700 !important;
+  font-size: 1.15rem !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  text-shadow: none !important;
+}
+
+#page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page,
+#nav .menus_items .menus_item .site-page {
+  color: #334155 !important;
+  text-shadow: none !important;
+}
+
+#page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page:hover,
+#nav .menus_items .menus_item .site-page:hover {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #2563eb !important;
+}
+
+#page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page:hover i,
+#page-header:not(.nav-fixed) #nav .menus_items .menus_item .site-page:hover span,
+#nav .menus_items .menus_item .site-page:hover i,
+#nav .menus_items .menus_item .site-page:hover span {
+  color: #2563eb !important;
+}
+
+/* 3.2 滑动到正文（fixed 状态）：纯净透润高阶磨砂白 */
+#page-header.nav-fixed #nav,
+#page-header.not-top-img #nav {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(25px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
 }
 
 #page-header.nav-fixed #nav #blog-info a,
@@ -123,57 +150,68 @@ html, body {
 
 #page-header.nav-fixed #nav .menus_items .menus_item .site-page:hover,
 #page-header.not-top-img #nav .menus_items .menus_item .site-page:hover {
-  background: rgba(59, 130, 246, 0.1) !important;
+  background: rgba(59, 130, 246, 0.12) !important;
   color: #2563eb !important;
 }
 
-/* 3.3 阅读向下滑动时：导航栏平滑滑出隐藏 */
-#page-header.nav-fixed:not(.nav-visible) #nav {
-  transform: translate(-50%, -100%) !important;
-}
-
-/* 3.4 向上轻微滑动时：导航栏立刻滑入呈现 */
-#page-header.nav-fixed.nav-visible #nav {
+/* 3.3 导航栏可见状态：居中、悬浮、完全展现 */
+#nav,
+#page-header #nav,
+#page-header.nav-visible #nav,
+#page-header:not(.nav-fixed) #nav {
+  top: 0 !important;
+  bottom: auto !important;
   transform: translate(-50%, 0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
-/* 3.5 导航栏左侧：博客名牢固锁定在最左侧 */
+/* 3.4 滚动到达正文后：向下阅读时平滑向上收缩隐藏 */
+#page-header.nav-fixed:not(.nav-visible) #nav {
+  top: 0 !important;
+  bottom: auto !important;
+  transform: translate(-50%, -140%) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+
+/* 3.6 导航栏左侧：博客名与图标锁定 */
 #nav #blog-info {
   flex-shrink: 0 !important;
 }
 
-#nav #blog-info a {
-  font-weight: 700 !important;
-  font-size: 1.15rem !important;
-  letter-spacing: 0.5px !important;
-  line-height: 1 !important;
-}
-
-/* 3.6 导航栏右侧菜单：各导航项均匀分布排列，文字与图标精准水平垂直居中 */
+/* 3.7 导航栏右侧菜单：流式排布、禁止折行、图标文字水平对齐 */
 #nav #menus {
   display: flex !important;
   align-items: center !important;
   flex: 1 !important;
   justify-content: flex-end !important;
-  margin-left: 30px !important;
+  margin-left: 20px !important;
 }
 
 #nav #menus .menus_items {
   display: flex !important;
   align-items: center !important;
-  justify-content: space-evenly !important;
-  width: 100% !important;
-  max-width: 520px !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  width: auto !important;
+  max-width: none !important;
 }
 
 #nav .menus_items .menus_item {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
   margin: 0 !important;
 }
 
 #nav .menus_items .menus_item .site-page {
   border-radius: 10px !important;
-  padding: 6px 14px !important;
-  font-size: 13.8px !important;
+  padding: 7px 13px !important;
+  font-size: 14px !important;
   font-weight: 500 !important;
   transition: all 0.25s ease !important;
   display: inline-flex !important;
@@ -182,6 +220,8 @@ html, body {
   gap: 6px !important;
   line-height: 1 !important;
   vertical-align: middle !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 #nav .menus_items .menus_item .site-page i {
@@ -191,14 +231,17 @@ html, body {
   align-items: center !important;
   margin: 0 !important;
   padding: 0 !important;
+  flex-shrink: 0 !important;
 }
 
 #nav .menus_items .menus_item .site-page span {
-  font-size: 13.8px !important;
+  font-size: 14px !important;
   line-height: 1 !important;
   display: inline-block !important;
+  white-space: nowrap !important;
   margin: 0 !important;
   padding: 0 !important;
+  flex-shrink: 0 !important;
 }
 
 /* 4. 左侧侧边栏（个人简介 + 公告栏）吸顶固定 */
@@ -485,14 +528,14 @@ html, body {
   background-image: none !important;
 }
 
+[data-theme="dark"] #nav,
+[data-theme="dark"] #page-header:not(.nav-fixed) #nav,
 [data-theme="dark"] #page-header.nav-fixed #nav,
 [data-theme="dark"] #page-header.not-top-img #nav,
 [data-theme="dark"] #page-header.nav-visible #nav {
-  background: rgba(15, 23, 42, 0.85) !important;
-  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  background: rgba(18, 24, 38, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45) !important;
 }
 
 [data-theme="dark"] #nav #blog-info a,
@@ -501,7 +544,12 @@ html, body {
 }
 
 [data-theme="dark"] #nav .menus_items .menus_item .site-page:hover {
-  background: rgba(59, 130, 246, 0.2) !important;
+  background: rgba(59, 130, 246, 0.22) !important;
+  color: #60a5fa !important;
+}
+
+[data-theme="dark"] #nav .menus_items .menus_item .site-page:hover i,
+[data-theme="dark"] #nav .menus_items .menus_item .site-page:hover span {
   color: #60a5fa !important;
 }
 
