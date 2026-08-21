@@ -1,0 +1,652 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>为什么越刷手机越累？从脑科学看「真假休息」与精力重启 | Cx`s Blog</title><meta name="author" content="Cx"><meta name="copyright" content="Cx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="为什么休息了一整天，身体明明没动，却比上班还要精疲力竭？从大脑认知机制拆解信息输入、多任务后台与手机成瘾的底层逻辑，并提供一份清晰的大脑能量恢复指南。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么越刷手机越累？从脑科学看「真假休息」与精力重启">
+<meta property="og:url" content="https://cxhahalala.github.io/posts/growth/why-scrolling-phone-drains-energy/index.html">
+<meta property="og:site_name" content="Cx&#96;s Blog">
+<meta property="og:description" content="为什么休息了一整天，身体明明没动，却比上班还要精疲力竭？从大脑认知机制拆解信息输入、多任务后台与手机成瘾的底层逻辑，并提供一份清晰的大脑能量恢复指南。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20260817163106371.png">
+<meta property="article:published_time" content="2026-08-21T10:15:00.000Z">
+<meta property="article:modified_time" content="2026-08-21T10:12:54.568Z">
+<meta property="article:author" content="Cx">
+<meta property="article:tag" content="脑科学">
+<meta property="article:tag" content="精力管理">
+<meta property="article:tag" content="认知提升">
+<meta property="article:tag" content="自律与习惯">
+<meta property="article:tag" content="个人成长">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20260817163106371.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "为什么越刷手机越累？从脑科学看「真假休息」与精力重启",
+  "url": "https://cxhahalala.github.io/posts/growth/why-scrolling-phone-drains-energy/",
+  "image": "https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20260817163106371.png",
+  "datePublished": "2026-08-21T10:15:00.000Z",
+  "dateModified": "2026-08-21T10:12:54.568Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Cx",
+      "url": "https://cxhahalala.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://cxhahalala.github.io/posts/growth/why-scrolling-phone-drains-energy/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '为什么越刷手机越累？从脑科学看「真假休息」与精力重启',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(/Background/%E4%B8%BB%E9%A1%B5%E8%83%8C%E6%99%AF.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/Background/%E5%A4%B4%E5%83%8F1.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/photo/"><i class="fa-fw fas fa-camera"></i><span> 图片</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20260817163106371.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cx`s Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">为什么越刷手机越累？从脑科学看「真假休息」与精力重启</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/photo/"><i class="fa-fw fas fa-camera"></i><span> 图片</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">为什么越刷手机越累？从脑科学看「真假休息」与精力重启</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-21T10:15:00.000Z" title="发表于 2026-08-21 18:15:00">2026-08-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-21T10:12:54.568Z" title="更新于 2026-08-21 18:12:54">2026-08-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/">个人成长</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>你是否有过这样的经历？</p>
+<p>结束了一周的高强度学习或工作，周末决定“好好放松一下”。于是躺在床上刷了一整天的短视频、看看社交软件、和朋友断断续续地聊天。然而到了晚上，不仅没有感到神清气爽，反而头昏脑涨、浑身乏力，甚至比连上几天班还要疲惫。</p>
+<p>很多人把这种状态归咎于“体力没恢复”或“自己太懒”。但从<strong>脑科学与认知心理学</strong>的角度来看，问题恰恰出在我们对“休息”的认知误区上——<strong>身体的静止，绝不等于大脑的休整。</strong></p>
+<span id="more"></span>
+
+<hr>
+<h1 id="为什么越刷手机越累？从脑科学看「真假休息」与精力重启"><a href="#为什么越刷手机越累？从脑科学看「真假休息」与精力重启" class="headerlink" title="为什么越刷手机越累？从脑科学看「真假休息」与精力重启"></a>为什么越刷手机越累？从脑科学看「真假休息」与精力重启</h1><h2 id="一、认清消耗真相：信息输入-neq-休息，娱乐-neq-恢复"><a href="#一、认清消耗真相：信息输入-neq-休息，娱乐-neq-恢复" class="headerlink" title="一、认清消耗真相：信息输入 $\neq$ 休息，娱乐 $\neq$ 恢复"></a>一、认清消耗真相：信息输入 $\neq$ 休息，娱乐 $\neq$ 恢复</h2><h3 id="1-身体在休息，注意力却在经历“微决策轰炸”"><a href="#1-身体在休息，注意力却在经历“微决策轰炸”" class="headerlink" title="1. 身体在休息，注意力却在经历“微决策轰炸”"></a>1. 身体在休息，注意力却在经历“微决策轰炸”</h3><p>很多人以为躺着刷手机就是休息。但实际上，大脑在后台进行着极其繁重的认知运算：</p>
+<ul>
+<li><strong>海量微决策</strong>：每滑动一个视频，大脑都需要在 1~2 秒内迅速判断：<em>这个内容有趣吗？要不要看下去？笑点在哪里？要不要点赞或划走？</em></li>
+<li><strong>情绪与认知调动</strong>：在社交软件上与人交流时，大脑需要调动同理心、分析语境、组织语言并揣摩回复方式。</li>
+</ul>
+<p>单独一次微决策看似微不足道，但持续刷上一两个小时，大脑就已经经历了<strong>成百上千次高频的“接收信息 $\rightarrow$ 过滤评估 $\rightarrow$ 做出决策”</strong>。这种持续的刺激会迅速耗尽前额叶皮层的注意力资源，导致严重的<strong>决策疲劳（Decision Fatigue）</strong>。</p>
+<blockquote>
+<p><strong>核心法则</strong>：<br>只要还在<strong>持续输入信息</strong>（无论是学习、听歌、闲聊还是刷短视频），大脑就在运转与消耗。真正的休息，首先要<strong>切断信息输入</strong>。</p>
+</blockquote>
+<hr>
+<h3 id="2-人脑是单线程的，别让“后台程序”占满你的认知带宽"><a href="#2-人脑是单线程的，别让“后台程序”占满你的认知带宽" class="headerlink" title="2. 人脑是单线程的，别让“后台程序”占满你的认知带宽"></a>2. 人脑是单线程的，别让“后台程序”占满你的认知带宽</h3><blockquote>
+<p><em>“一边在玩，一边心里还挂念着没做完的学习或工作。”</em></p>
+</blockquote>
+<p>这是导致很多人“玩也没玩好，学也没学好”的罪魁祸首。</p>
+<p>人类的大脑天生是<strong>单线程处理器</strong>。当我们一边娱乐一边担忧待办事项时，大脑并不会真正放松，而是在前额叶中为这些任务保留了常驻的“后台监控进程”。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">【单线程专注模式】</span><br><span class="line">[ 当前任务：纯粹专注 ] ──────&gt; 认知负荷低，效率与体验最佳</span><br><span class="line"></span><br><span class="line">【多任务悬挂模式】</span><br><span class="line">[ 娱乐刷手机 ] </span><br><span class="line">      ├── [ 后台进程 1：挂念未完成的学习/工作 ]  ──&gt; 认知带宽被疯狂挤占</span><br><span class="line">      └── [ 后台进程 2：内疚感与焦虑情绪蔓延 ]  ──&gt; 身心俱疲，效率归零</span><br></pre></td></tr></table></figure>
+
+<p>这种认知带宽的持续挤占，不仅剥夺了娱乐该有的愉悦感，还会让人陷入长期的隐性内耗中。</p>
+<hr>
+<h2 id="二、深度剖析：为什么越疲惫，越难放下手机？"><a href="#二、深度剖析：为什么越疲惫，越难放下手机？" class="headerlink" title="二、深度剖析：为什么越疲惫，越难放下手机？"></a>二、深度剖析：为什么越疲惫，越难放下手机？</h2><p>当精力已经耗尽时，理智告诉我们应该去睡觉或闭目养神，但身体却像被吸铁石吸在手机屏幕前，根本停不下来。这背后的神经机制是什么？</p>
+<h3 id="1-手机消除了“决策成本”与“启动成本”"><a href="#1-手机消除了“决策成本”与“启动成本”" class="headerlink" title="1. 手机消除了“决策成本”与“启动成本”"></a>1. 手机消除了“决策成本”与“启动成本”</h3><p>学习、读书甚至早点去洗漱睡觉，都需要消耗前额叶皮层的意志力去进行复杂的决断与行动启动：</p>
+<ul>
+<li><em>“我先从哪一页开始看？”</em></li>
+<li><em>“这道题该怎么解？”</em></li>
+<li><em>“我得先去拿睡衣、放热水……”</em></li>
+</ul>
+<p>而手机（尤其是短视频和算法信息流）通过极简的交互设计，<strong>把开始和结束的门槛降到了极致</strong>：</p>
+<ul>
+<li>它彻底取消了“下一步该干什么”的问题——算法会自动为你投喂下一条内容；</li>
+<li>它不需要你做艰难的抉择，手指随手一划，即时多巴胺便唾手可得。</li>
+</ul>
+<p>当大脑电量耗尽、无力支撑复杂决策时，<strong>手机就成了阻力最小的避难所与情绪出口</strong>。</p>
+<hr>
+<h3 id="2-真正的自律：在清醒时为不清醒时做好准备"><a href="#2-真正的自律：在清醒时为不清醒时做好准备" class="headerlink" title="2. 真正的自律：在清醒时为不清醒时做好准备"></a>2. 真正的自律：在清醒时为不清醒时做好准备</h3><p>很多人陷入误区，以为自律就是“当想玩手机的冲动产生时，凭钢铁意志去遏制它”。</p>
+<p>但在脑科学中，意志力是一种极易枯竭的生理资源。在疲惫不堪、电量见底的时刻，依靠意志力与多巴胺本能硬抗，几乎注定会失败。</p>
+<blockquote>
+<p><strong>真正的高手，从不靠意志力死磕冲动，而是在清醒时建立机制与环境，从源头遏制冲动的触发条件。</strong></p>
+</blockquote>
+<hr>
+<h2 id="三、实践落地：打造你的「大脑能量重启协议」"><a href="#三、实践落地：打造你的「大脑能量重启协议」" class="headerlink" title="三、实践落地：打造你的「大脑能量重启协议」"></a>三、实践落地：打造你的「大脑能量重启协议」</h2><p>为了摆脱“越歇越累”的恶性循环，我们需要重构自己的精力管理与休息系统：</p>
+<h3 id="1-建立每天-30-分钟的「绝对无输入空白期」"><a href="#1-建立每天-30-分钟的「绝对无输入空白期」" class="headerlink" title="1. 建立每天 30 分钟的「绝对无输入空白期」"></a>1. 建立每天 30 分钟的「绝对无输入空白期」</h3><p>每天给自己留出固定 30 分钟的“信息真空期”：</p>
+<ul>
+<li>关掉屏幕、放下耳机、停止社交软件与所有资讯输入；</li>
+<li>可以选择闭目养神、散步放空、或者只是安静地坐着；</li>
+<li>给大脑的默认模式网络（DMN）一个自我整理与清理代谢废物的窗口。</li>
+</ul>
+<hr>
+<h3 id="2-坚守「单线程原则」（Single-Tasking）"><a href="#2-坚守「单线程原则」（Single-Tasking）" class="headerlink" title="2. 坚守「单线程原则」（Single-Tasking）"></a>2. 坚守「单线程原则」（Single-Tasking）</h3><ul>
+<li><strong>一次只做一件事</strong>：学的时候全神贯注，玩的时候痛痛快快；</li>
+<li>杜绝多任务心智游离，消除潜意识中的“后台驻留进程”。</li>
+</ul>
+<hr>
+<h3 id="3-娱乐前预设「行动锚点」"><a href="#3-娱乐前预设「行动锚点」" class="headerlink" title="3. 娱乐前预设「行动锚点」"></a>3. 娱乐前预设「行动锚点」</h3><p>如果你打算去娱乐或放松，<strong>在开始前务必明确约定好：结束娱乐后，回来的第一件具体动作是什么</strong>。</p>
+<ul>
+<li>❌ <strong>空泛目标</strong>：“玩完这把我去学会儿编程&#x2F;看会儿书。”（返回时需要重新决策，极易直接放弃并继续玩手机）</li>
+<li>✅ <strong>具体微动作</strong>：“玩 20 分钟后，我立刻打开 IDEA，把昨天写的 UserController 第 35 行代码重构完成。”</li>
+</ul>
+<blockquote>
+<p>极度具体的微行动能够大幅降低任务的启动成本，避免娱乐结束后因精力不足而陷入“决策空白”。</p>
+</blockquote>
+<hr>
+<h3 id="4-制定「疲劳协议」与极简休息"><a href="#4-制定「疲劳协议」与极简休息" class="headerlink" title="4. 制定「疲劳协议」与极简休息"></a>4. 制定「疲劳协议」与极简休息</h3><h4 id="①-拒绝“复杂的仪式感”，推崇“极简的真休息”"><a href="#①-拒绝“复杂的仪式感”，推崇“极简的真休息”" class="headerlink" title="① 拒绝“复杂的仪式感”，推崇“极简的真休息”"></a>① 拒绝“复杂的仪式感”，推崇“极简的真休息”</h4><p>很多人以为休息必须做一整套复杂的仪式：洗热水澡、做一顿大餐、看一部电影……但当人已经极度疲惫时，复杂的休息流程反而带来了额外的启动门槛。</p>
+<ul>
+<li><strong>我们需要的不是高级的休息，而是更简单的休息</strong>；</li>
+<li>感觉疲惫时，<strong>立即停下手中所有事情，闭上眼睛休息 10 分钟</strong>，然后从极其简单的动作重新开始；</li>
+<li>如果确实到达了生理极限，<strong>果断关机上床睡觉</strong>，而不是抱着“刷 5 分钟手机就睡”的侥幸心理。</li>
+</ul>
+<h4 id="②-物理隔离：增加诱惑的摩擦力"><a href="#②-物理隔离：增加诱惑的摩擦力" class="headerlink" title="② 物理隔离：增加诱惑的摩擦力"></a>② 物理隔离：增加诱惑的摩擦力</h4><ul>
+<li>在工作、学习或准备入睡时，把手机放到视线之外、甚至需要起身走几步才能拿到的位置；</li>
+<li>拉长获取多巴胺的路径，给理智反应争取宝贵的缓冲时间。</li>
+</ul>
+<hr>
+<h2 id="结语：对信息做减法，把清醒还给大脑"><a href="#结语：对信息做减法，把清醒还给大脑" class="headerlink" title="结语：对信息做减法，把清醒还给大脑"></a>结语：对信息做减法，把清醒还给大脑</h2><p>在信息过载的时代，最稀缺的资源不是信息本身，而是<strong>高质量的注意力和清醒的认知带宽</strong>。</p>
+<p>学会区分“娱乐”与“休息”，克制低成本信息的过度摄入，建立属于自己的能量重启协议。每一次主动按下“停止输入”的开关，都是在为你的人生夺回宝贵的专注与自由。</p>
+<hr>
+<p><em>分类：个人成长 ｜ 标签：脑科学、精力管理、认知提升</em></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cxhahalala.github.io">Cx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cxhahalala.github.io/posts/growth/why-scrolling-phone-drains-energy/">https://cxhahalala.github.io/posts/growth/why-scrolling-phone-drains-energy/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cxhahalala.github.io" target="_blank">Cx`s Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%84%91%E7%A7%91%E5%AD%A6/">脑科学</a><a class="post-meta__tags" href="/tags/%E7%B2%BE%E5%8A%9B%E7%AE%A1%E7%90%86/">精力管理</a><a class="post-meta__tags" href="/tags/%E8%AE%A4%E7%9F%A5%E6%8F%90%E5%8D%87/">认知提升</a><a class="post-meta__tags" href="/tags/%E8%87%AA%E5%BE%8B%E4%B8%8E%E4%B9%A0%E6%83%AF/">自律与习惯</a><a class="post-meta__tags" href="/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/">个人成长</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20260817163106371.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/posts/emotion/%E6%88%91%E7%9A%84%E7%88%B1%E4%BA%BA/" title="我的爱人"><img class="cover" src="https://cdn.jsdelivr.net/gh/Cxhahalala/hexo-images-1@main/images/20260817163106371.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">我的爱人</div></div><div class="info-2"><div class="info-item-1">世界上美好的事物有很多，但最幸运的，莫过于在这漫漫岁月里遇见了你。贾柔柔，我爱你。</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B6%8A%E5%88%B7%E6%89%8B%E6%9C%BA%E8%B6%8A%E7%B4%AF%EF%BC%9F%E4%BB%8E%E8%84%91%E7%A7%91%E5%AD%A6%E7%9C%8B%E3%80%8C%E7%9C%9F%E5%81%87%E4%BC%91%E6%81%AF%E3%80%8D%E4%B8%8E%E7%B2%BE%E5%8A%9B%E9%87%8D%E5%90%AF"><span class="toc-number">1.</span> <span class="toc-text">为什么越刷手机越累？从脑科学看「真假休息」与精力重启</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%AE%A4%E6%B8%85%E6%B6%88%E8%80%97%E7%9C%9F%E7%9B%B8%EF%BC%9A%E4%BF%A1%E6%81%AF%E8%BE%93%E5%85%A5-neq-%E4%BC%91%E6%81%AF%EF%BC%8C%E5%A8%B1%E4%B9%90-neq-%E6%81%A2%E5%A4%8D"><span class="toc-number">1.1.</span> <span class="toc-text">一、认清消耗真相：信息输入 $\neq$ 休息，娱乐 $\neq$ 恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BA%AB%E4%BD%93%E5%9C%A8%E4%BC%91%E6%81%AF%EF%BC%8C%E6%B3%A8%E6%84%8F%E5%8A%9B%E5%8D%B4%E5%9C%A8%E7%BB%8F%E5%8E%86%E2%80%9C%E5%BE%AE%E5%86%B3%E7%AD%96%E8%BD%B0%E7%82%B8%E2%80%9D"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 身体在休息，注意力却在经历“微决策轰炸”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BA%BA%E8%84%91%E6%98%AF%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84%EF%BC%8C%E5%88%AB%E8%AE%A9%E2%80%9C%E5%90%8E%E5%8F%B0%E7%A8%8B%E5%BA%8F%E2%80%9D%E5%8D%A0%E6%BB%A1%E4%BD%A0%E7%9A%84%E8%AE%A4%E7%9F%A5%E5%B8%A6%E5%AE%BD"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 人脑是单线程的，别让“后台程序”占满你的认知带宽</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%B7%B1%E5%BA%A6%E5%89%96%E6%9E%90%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B6%8A%E7%96%B2%E6%83%AB%EF%BC%8C%E8%B6%8A%E9%9A%BE%E6%94%BE%E4%B8%8B%E6%89%8B%E6%9C%BA%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">二、深度剖析：为什么越疲惫，越难放下手机？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%89%8B%E6%9C%BA%E6%B6%88%E9%99%A4%E4%BA%86%E2%80%9C%E5%86%B3%E7%AD%96%E6%88%90%E6%9C%AC%E2%80%9D%E4%B8%8E%E2%80%9C%E5%90%AF%E5%8A%A8%E6%88%90%E6%9C%AC%E2%80%9D"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 手机消除了“决策成本”与“启动成本”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%9C%9F%E6%AD%A3%E7%9A%84%E8%87%AA%E5%BE%8B%EF%BC%9A%E5%9C%A8%E6%B8%85%E9%86%92%E6%97%B6%E4%B8%BA%E4%B8%8D%E6%B8%85%E9%86%92%E6%97%B6%E5%81%9A%E5%A5%BD%E5%87%86%E5%A4%87"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 真正的自律：在清醒时为不清醒时做好准备</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E8%B7%B5%E8%90%BD%E5%9C%B0%EF%BC%9A%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84%E3%80%8C%E5%A4%A7%E8%84%91%E8%83%BD%E9%87%8F%E9%87%8D%E5%90%AF%E5%8D%8F%E8%AE%AE%E3%80%8D"><span class="toc-number">1.3.</span> <span class="toc-text">三、实践落地：打造你的「大脑能量重启协议」</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%BB%BA%E7%AB%8B%E6%AF%8F%E5%A4%A9-30-%E5%88%86%E9%92%9F%E7%9A%84%E3%80%8C%E7%BB%9D%E5%AF%B9%E6%97%A0%E8%BE%93%E5%85%A5%E7%A9%BA%E7%99%BD%E6%9C%9F%E3%80%8D"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 建立每天 30 分钟的「绝对无输入空白期」</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9D%9A%E5%AE%88%E3%80%8C%E5%8D%95%E7%BA%BF%E7%A8%8B%E5%8E%9F%E5%88%99%E3%80%8D%EF%BC%88Single-Tasking%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 坚守「单线程原则」（Single-Tasking）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A8%B1%E4%B9%90%E5%89%8D%E9%A2%84%E8%AE%BE%E3%80%8C%E8%A1%8C%E5%8A%A8%E9%94%9A%E7%82%B9%E3%80%8D"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 娱乐前预设「行动锚点」</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%B6%E5%AE%9A%E3%80%8C%E7%96%B2%E5%8A%B3%E5%8D%8F%E8%AE%AE%E3%80%8D%E4%B8%8E%E6%9E%81%E7%AE%80%E4%BC%91%E6%81%AF"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 制定「疲劳协议」与极简休息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A0-%E6%8B%92%E7%BB%9D%E2%80%9C%E5%A4%8D%E6%9D%82%E7%9A%84%E4%BB%AA%E5%BC%8F%E6%84%9F%E2%80%9D%EF%BC%8C%E6%8E%A8%E5%B4%87%E2%80%9C%E6%9E%81%E7%AE%80%E7%9A%84%E7%9C%9F%E4%BC%91%E6%81%AF%E2%80%9D"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">① 拒绝“复杂的仪式感”，推崇“极简的真休息”</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A1-%E7%89%A9%E7%90%86%E9%9A%94%E7%A6%BB%EF%BC%9A%E5%A2%9E%E5%8A%A0%E8%AF%B1%E6%83%91%E7%9A%84%E6%91%A9%E6%93%A6%E5%8A%9B"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">② 物理隔离：增加诱惑的摩擦力</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD%EF%BC%9A%E5%AF%B9%E4%BF%A1%E6%81%AF%E5%81%9A%E5%87%8F%E6%B3%95%EF%BC%8C%E6%8A%8A%E6%B8%85%E9%86%92%E8%BF%98%E7%BB%99%E5%A4%A7%E8%84%91"><span class="toc-number">1.4.</span> <span class="toc-text">结语：对信息做减法，把清醒还给大脑</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Cx</span></div><div class="footer_custom_text"><div class="footer-badges"><span class="badge-item"><i class="fas fa-bolt" style="color:#eab308;margin-right:4px;"></i>由 Hexo & Butterfly 强力驱动</span><span class="badge-item"><i class="fab fa-github" style="color:#24292e;margin-right:4px;"></i>托管于 GitHub Pages</span><span class="badge-item"><i class="fas fa-heart" style="color:#ef4444;margin-right:4px;"></i>愿历尽千帆，归来仍是少年</span></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script src="/js/nav-scroll.js"></script></div></body></html>
